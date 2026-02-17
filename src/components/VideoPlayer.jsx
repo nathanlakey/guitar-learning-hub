@@ -91,14 +91,32 @@ export default function VideoPlayer({ videoId, savedLoops = [], onSaveLoop }) {
       </div>
 
       <div className="video-container">
-        <iframe
-          src={`https://www.youtube.com/embed/${currentVideoId}?rel=0&modestbranding=1&controls=1`}
-          title="YouTube video player"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          className="youtube-iframe"
-        />
+        {!currentVideoId || currentVideoId === '' ? (
+          <div className="no-video-placeholder">
+            <div className="placeholder-content">
+              <h2>📺 No Video Selected</h2>
+              <p>Paste a YouTube URL above to get started!</p>
+              <div className="suggestion-links">
+                <p>Quick search suggestions:</p>
+                <a href="https://www.youtube.com/results?search_query=guitar+lesson+for+absolute+beginners" target="_blank" rel="noopener noreferrer">
+                  Beginner Guitar Lessons
+                </a>
+                <a href="https://www.youtube.com/results?search_query=guitar+chords+tutorial" target="_blank" rel="noopener noreferrer">
+                  Chord Tutorials
+                </a>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <iframe
+            src={`https://www.youtube.com/embed/${currentVideoId}?rel=0&modestbranding=1&controls=1`}
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="youtube-iframe"
+          />
+        )}
       </div>
 
       <div className="video-info-section">
