@@ -5,7 +5,7 @@ export const learningPaths = {
     videos: [
       {
         id: "v1",
-        youtubeId: "cCvOG23yrXQ",
+        youtubeId: "CW36CkFg5GU",
         title: "How to Hold a Guitar",
         description: "Learn proper posture and hand positioning"
       },
@@ -35,7 +35,7 @@ export const learningPaths = {
     videos: [
       {
         id: "v5",
-        youtubeId: "lL3nI58Wtxg",
+        youtubeId: "VdH4NKdPDjQ",
         title: "Barre Chords Mastery",
         description: "Learn to play barre chords cleanly"
       },
@@ -53,7 +53,7 @@ export const learningPaths = {
       },
       {
         id: "v8",
-        youtubeId: "p47ytzV07Ds",
+        youtubeId: "ZNxW25SqTkM",
         title: "Chord Progressions",
         description: "Understanding common progressions"
       }
@@ -65,7 +65,7 @@ export const learningPaths = {
     videos: [
       {
         id: "v9",
-        youtubeId: "UOk2to8s4Ac",
+        youtubeId: "ZwzMJWSSqPA",
         title: "Advanced Fingerstyle",
         description: "Complex fingerpicking patterns"
       },

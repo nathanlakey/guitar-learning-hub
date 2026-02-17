@@ -19,6 +19,7 @@ export default function VideoPlayer({ videoId, savedLoops = [], onSaveLoop }) {
   const [notes, setNotes] = useState([]);
   const [noteText, setNoteText] = useState('');
   const [showNotes, setShowNotes] = useState(false);
+  const [videoError, setVideoError] = useState(false);
   const intervalRef = useRef(null);
 
   const opts = {
@@ -28,6 +29,10 @@ export default function VideoPlayer({ videoId, savedLoops = [], onSaveLoop }) {
       autoplay: 0,
       controls: 1,
       modestbranding: 1,
+      rel: 0,
+      fs: 1,
+      enablejsapi: 1,
+      origin: window.location.origin,
     },
   };
 
@@ -35,11 +40,18 @@ export default function VideoPlayer({ videoId, savedLoops = [], onSaveLoop }) {
     setPlayer(event.target);
     setDuration(event.target.getDuration());
     event.target.setPlaybackRate(playbackRate);
+    setVideoError(false);
+  };
+
+  const onError = (event) => {
+    console.error('YouTube player error:', event.data);
+    setVideoError(true);
   };
 
   const onStateChange = (event) => {
     if (event.data === 1) { // Playing
       setIsPlaying(true);
+      setVideoError(false);
     } else if (event.data === 2) { // Paused
       setIsPlaying(false);
     }
@@ -282,12 +294,33 @@ export default function VideoPlayer({ videoId, savedLoops = [], onSaveLoop }) {
   return (
     <div className="video-player">
       <div className="video-container">
-        <YouTube
-          videoId={videoId}
-          opts={opts}
-          onReady={onReady}
-          onStateChange={onStateChange}
-        />
+        {videoError ? (
+          <div className="video-error">
+            <div className="error-content">
+              <h3>⚠️ Video Unavailable</h3>
+              <p>This video cannot be embedded. Watch it directly on YouTube:</p>
+              <a 
+                href={`https://www.youtube.com/watch?v=${videoId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="youtube-link"
+              >
+                🎥 Open in YouTube
+              </a>
+              <p className="error-hint">
+                Tip: Use your own YouTube videos or videos that allow embedding for the best experience.
+              </p>
+            </div>
+          </div>
+        ) : (
+          <YouTube
+            videoId={videoId}
+            opts={opts}
+            onReady={onReady}
+            onStateChange={onStateChange}
+            onError={onError}
+          />
+        )}
       </div>
 
       <div className="controls">

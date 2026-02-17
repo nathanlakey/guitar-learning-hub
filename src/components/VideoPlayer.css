@@ -11,6 +11,55 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  min-height: 480px;
+  background: #1a1a1a;
+}
+
+.video-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 480px;
+  padding: 40px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+}
+
+.error-content {
+  text-align: center;
+  max-width: 500px;
+}
+
+.error-content h3 {
+  color: #ff6b6b;
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.error-content p {
+  color: #aaa;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.error-hint {
+  font-size: 13px;
+  color: #666;
+  margin-top: 20px;
+}
+
+.youtube-link {
+  display: inline-block;
+  padding: 12px 24px;
+  background: #ff0000;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.youtube-link:hover {
+  background: #cc0000;
 }
 
 .controls {
