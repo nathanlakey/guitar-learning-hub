@@ -193,6 +193,12 @@
   color: #fff;
   font-weight: bold;
   font-size: 18px;
+  transition: color 0.3s;
+}
+
+.string-label.in-scale {
+  color: #42b883;
+  text-shadow: 0 0 8px rgba(66, 184, 131, 0.8);
 }
 
 .fret-marker-top {

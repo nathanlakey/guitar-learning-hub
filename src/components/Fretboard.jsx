@@ -18,7 +18,7 @@ const SCALES = {
 };
 
 const TUNING = ['E', 'A', 'D', 'G', 'B', 'E']; // Standard tuning (low to high)
-const FRETS = 15;
+const FRETS = 24;
 
 export default function Fretboard() {
   const [selectedScale, setSelectedScale] = useState('Pentatonic Minor');
@@ -104,7 +104,7 @@ export default function Fretboard() {
             <div className="string-label"></div>
             {[...Array(FRETS + 1)].map((_, fret) => (
               <div key={fret} className="fret-marker-top">
-                {fret === 0 ? 'Open' : fret}
+                {fret === 0 ? '' : fret}
               </div>
             ))}
           </div>
@@ -121,37 +121,41 @@ export default function Fretboard() {
           </div>
 
           {/* Strings */}
-          {[...TUNING].reverse().map((stringNote, stringIndex) => (
-            <div key={stringIndex} className="string-row">
-              <div className="string-label">{stringNote}</div>
-              {[...Array(FRETS + 1)].map((_, fret) => {
-                const note = getNoteAtFret(stringNote, fret);
-                const inScale = isNoteInScale(note);
-                const isRoot = isRootNote(note);
+          {[...TUNING].reverse().map((stringNote, stringIndex) => {
+            const openNote = getNoteAtFret(stringNote, 0);
+            const isOpenInScale = isNoteInScale(openNote);
+            
+            return (
+              <div key={stringIndex} className="string-row">
+                <div className={`string-label ${isOpenInScale ? 'in-scale' : ''}`}>{stringNote}</div>
+                {[...Array(FRETS + 1)].map((_, fret) => {
+                  const note = getNoteAtFret(stringNote, fret);
+                  const inScale = isNoteInScale(note);
+                  const isRoot = isRootNote(note);
 
-                return (
-                  <div key={fret} className="fret-cell">
-                    <div className="string-line"></div>
-                    {inScale && (
-                      <div className={`note ${isRoot ? 'root' : 'scale'}`}>
-                        {showNoteNames ? note : '•'}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          ))}
+                  return (
+                    <div key={fret} className="fret-cell">
+                      <div className="string-line"></div>
+                      {inScale && (
+                        <div className={`note ${isRoot ? 'root' : 'scale'}`}>
+                          {showNoteNames ? note : '•'}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
 
           {/* Fret position markers */}
           <div className="position-markers">
-            {[3, 5, 7, 9].map(fret => (
+            {[3, 5, 7, 9, 15, 17, 19, 21, 24].map(fret => (
               <div key={fret} className="position-marker" style={{left: `calc(${(fret - 0.5) * (100 / FRETS)}%)`}}></div>
             ))}
             {/* Double dots for 12th fret */}
             <div className="position-marker" style={{left: `calc(${(12 - 0.7) * (100 / FRETS)}%)`}}></div>
             <div className="position-marker" style={{left: `calc(${(12 - 0.3) * (100 / FRETS)}%)`}}></div>
-            <div className="position-marker" style={{left: `calc(${(15 - 0.5) * (100 / FRETS)}%)`}}></div>
           </div>
         </div>
       </div>
