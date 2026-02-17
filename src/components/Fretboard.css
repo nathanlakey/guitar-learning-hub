@@ -273,6 +273,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 3;
 }
 
 .string-line {
@@ -294,8 +295,11 @@
 }
 
 .note {
-  position: relative;
-  z-index: 2;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
   width: 28px;
   height: 28px;
   border-radius: 50%;
@@ -330,12 +334,12 @@
 }
 
 .note:hover {
-  transform: scale(1.15);
+  transform: translate(-50%, -50%) scale(1.15);
   filter: brightness(1.2);
 }
 
 .note:active {
-  transform: scale(1.05);
+  transform: translate(-50%, -50%) scale(1.05);
 }
 
 .position-markers {

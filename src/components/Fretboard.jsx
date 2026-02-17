@@ -102,22 +102,29 @@ export default function Fretboard() {
           {/* Fret markers at top */}
           <div className="fret-markers-top">
             <div className="string-label"></div>
-            {[...Array(FRETS + 1)].map((_, fret) => (
-              <div key={fret} className="fret-marker-top">
-                {fret === 0 ? '' : fret}
-              </div>
-            ))}
+            {[...Array(FRETS)].map((_, index) => {
+              const fret = index + 1;
+              return (
+                <div key={fret} className="fret-marker-top">
+                  {fret}
+                </div>
+              );
+            })}
           </div>
 
           {/* Continuous vertical fret lines */}
           <div className="fret-lines-container">
-            {[...Array(FRETS + 1)].map((_, fret) => (
-              <div 
-                key={fret} 
-                className={`fret-line ${fret === 0 ? 'nut' : ''}`}
-                style={{left: `calc(60px + ${fret * (100 / FRETS)}% * ((100% - 60px) / 100%))`}}
-              />
-            ))}
+            <div className="fret-line nut" style={{left: '60px'}} />
+            {[...Array(FRETS)].map((_, index) => {
+              const fret = index + 1;
+              return (
+                <div 
+                  key={fret} 
+                  className="fret-line"
+                  style={{left: `calc(60px + ${fret * (100 / FRETS)}% * ((100% - 60px) / 100%))`}}
+                />
+              );
+            })}
           </div>
 
           {/* Strings */}
@@ -128,7 +135,8 @@ export default function Fretboard() {
             return (
               <div key={stringIndex} className="string-row">
                 <div className={`string-label ${isOpenInScale ? 'in-scale' : ''}`}>{stringNote}</div>
-                {[...Array(FRETS + 1)].map((_, fret) => {
+                {[...Array(FRETS)].map((_, index) => {
+                  const fret = index + 1;
                   const note = getNoteAtFret(stringNote, fret);
                   const inScale = isNoteInScale(note);
                   const isRoot = isRootNote(note);
@@ -136,7 +144,7 @@ export default function Fretboard() {
                   return (
                     <div key={fret} className="fret-cell">
                       <div className="string-line"></div>
-                      {inScale && fret > 0 && (
+                      {inScale && (
                         <div className={`note ${isRoot ? 'root' : 'scale'}`}>
                           {showNoteNames ? note : '•'}
                         </div>
