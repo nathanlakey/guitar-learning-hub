@@ -134,11 +134,13 @@ export default function Fretboard() {
 
           {/* Fret position markers */}
           <div className="position-markers">
-            {[3, 5, 7, 9, 12, 15].map(fret => (
-              <div key={fret} className="position-marker" style={{left: `calc(${fret * (100 / FRETS)}% - 10px)`}}>
-                {fret === 12 ? '••' : '•'}
-              </div>
+            {[3, 5, 7, 9].map(fret => (
+              <div key={fret} className="position-marker" style={{left: `calc(${(fret - 0.5) * (100 / FRETS)}%)`}}></div>
             ))}
+            {/* Double dots for 12th fret */}
+            <div className="position-marker" style={{left: `calc(${(12 - 0.7) * (100 / FRETS)}%)`}}></div>
+            <div className="position-marker" style={{left: `calc(${(12 - 0.3) * (100 / FRETS)}%)`}}></div>
+            <div className="position-marker" style={{left: `calc(${(15 - 0.5) * (100 / FRETS)}%)`}}></div>
           </div>
         </div>
       </div>
