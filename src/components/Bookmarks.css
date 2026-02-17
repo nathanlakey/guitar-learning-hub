@@ -1,0 +1,116 @@
+.bookmarks {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.bookmarks h2 {
+  font-size: 2em;
+  margin-bottom: 30px;
+  text-align: center;
+  color: #fff;
+}
+
+.bookmarks.empty {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.empty-message {
+  font-size: 1.1em;
+  color: #aaa;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.bookmarks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.bookmark-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.bookmark-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.bookmark-card .video-thumbnail {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  overflow: hidden;
+}
+
+.bookmark-card .video-thumbnail img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.remove-bookmark {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  border: none;
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.remove-bookmark:hover {
+  transform: scale(1.1);
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.bookmark-info {
+  padding: 15px;
+}
+
+.bookmark-info h3 {
+  font-size: 1.2em;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+.bookmark-info p {
+  font-size: 0.9em;
+  color: #aaa;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.bookmark-info button {
+  width: 100%;
+  background: #646cff;
+  color: white;
+  border: none;
+}
+
+.bookmark-info button:hover {
+  background: #535bf2;
+  border-color: #535bf2;
+}
+
+@media (max-width: 768px) {
+  .bookmarks-grid {
+    grid-template-columns: 1fr;
+  }
+}

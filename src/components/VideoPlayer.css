@@ -1,0 +1,155 @@
+.video-player {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.controls {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+}
+
+.playback-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.time-display {
+  font-family: monospace;
+  font-size: 14px;
+  color: #aaa;
+}
+
+.seek-bar {
+  margin-bottom: 20px;
+}
+
+.seek-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: #444;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.seek-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #646cff;
+  cursor: pointer;
+}
+
+.seek-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #646cff;
+  cursor: pointer;
+  border: none;
+}
+
+.loop-controls h3 {
+  margin-bottom: 15px;
+  color: #fff;
+  font-size: 18px;
+}
+
+.loop-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.loop-buttons button.active {
+  background-color: #646cff;
+  border-color: #646cff;
+}
+
+.save-loop {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.save-loop input {
+  flex: 1;
+}
+
+.saved-loops {
+  border-top: 1px solid #444;
+  padding-top: 20px;
+}
+
+.saved-loops h3 {
+  margin-bottom: 15px;
+  color: #fff;
+  font-size: 18px;
+}
+
+.loops-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.loop-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.loop-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.loop-name {
+  flex: 1;
+  font-weight: 500;
+}
+
+.loop-time {
+  font-family: monospace;
+  color: #aaa;
+  font-size: 14px;
+}
+
+.loop-item button {
+  padding: 0.4em 0.8em;
+  font-size: 0.9em;
+}
+
+@media (max-width: 768px) {
+  .loop-buttons {
+    flex-direction: column;
+  }
+
+  .loop-buttons button {
+    width: 100%;
+  }
+
+  .save-loop {
+    flex-direction: column;
+  }
+}
