@@ -137,12 +137,14 @@
 
 .fretboard-wrapper {
   overflow-x: auto;
-  padding: 20px 0;
+  padding: 10px 0;
 }
 
 .fretboard {
   position: relative;
   min-width: 1200px;
+  max-width: 1400px;
+  margin: 0 auto;
   background: 
     linear-gradient(90deg, 
       rgba(0, 0, 0, 0.15) 0%, 
@@ -169,7 +171,7 @@
       #4a3520 100%
     );
   border-radius: 4px 12px 12px 4px;
-  padding: 30px 20px;
+  padding: 15px 20px;
   box-shadow: 
     0 10px 30px rgba(0, 0, 0, 0.7),
     inset 0 1px 0 rgba(139, 90, 43, 0.3),
@@ -204,7 +206,7 @@
 .string-row {
   display: flex;
   position: relative;
-  margin-bottom: 18px;
+  margin-bottom: 8px;
 }
 
 .string-row:nth-child(2) .string-line { height: 1px; }
@@ -226,8 +228,8 @@
 
 .fret-line {
   position: absolute;
-  top: 30px;
-  bottom: 50px;
+  top: 15px;
+  bottom: 25px;
   width: 4px;
   background: linear-gradient(
     to bottom,
@@ -261,7 +263,7 @@
 .fret-cell {
   flex: 1;
   position: relative;
-  height: 45px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -288,14 +290,14 @@
 .note {
   position: relative;
   z-index: 2;
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  font-size: 13px;
+  font-size: 11px;
   cursor: pointer;
   transition: all 0.3s;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
