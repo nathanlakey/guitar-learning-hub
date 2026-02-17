@@ -109,6 +109,17 @@ export default function Fretboard() {
             ))}
           </div>
 
+          {/* Continuous vertical fret lines */}
+          <div className="fret-lines-container">
+            {[...Array(FRETS + 1)].map((_, fret) => (
+              <div 
+                key={fret} 
+                className={`fret-line ${fret === 0 ? 'nut' : ''}`}
+                style={{left: `calc(60px + ${fret * (100 / FRETS)}% * ((100% - 60px) / 100%))`}}
+              />
+            ))}
+          </div>
+
           {/* Strings */}
           {[...TUNING].reverse().map((stringNote, stringIndex) => (
             <div key={stringIndex} className="string-row">
@@ -119,7 +130,7 @@ export default function Fretboard() {
                 const isRoot = isRootNote(note);
 
                 return (
-                  <div key={fret} className="fret">
+                  <div key={fret} className="fret-cell">
                     <div className="string-line"></div>
                     {inScale && (
                       <div className={`note ${isRoot ? 'root' : 'scale'}`}>
