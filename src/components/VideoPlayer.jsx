@@ -1,236 +1,39 @@
-import React, { useState, useRef, useEffect } from 'react';
-import YouTube from 'react-youtube';
+import React, { useState } from 'react';
 import './VideoPlayer.css';
 
 export default function VideoPlayer({ videoId, savedLoops = [], onSaveLoop }) {
-  const [player, setPlayer] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [loopStart, setLoopStart] = useState(0);
-  const [loopEnd, setLoopEnd] = useState(0);
-  const [isLooping, setIsLooping] = useState(false);
+  const [customUrl, setCustomUrl] = useState('');
+  const [useCustomUrl, setUseCustomUrl] = useState(false);
   const [loopName, setLoopName] = useState('');
-  const [playbackRate, setPlaybackRate] = useState(1);
-  const [isSettingLoop, setIsSettingLoop] = useState(false);
-  const [loopCount, setLoopCount] = useState(0);
-  const [practiceMode, setPracticeMode] = useState(false);
-  const [practiceSpeed, setPracticeSpeed] = useState(0.5);
-  const [notes, setNotes] = useState([]);
-  const [noteText, setNoteText] = useState('');
   const [showNotes, setShowNotes] = useState(false);
-  const [videoError, setVideoError] = useState(false);
-  const intervalRef = useRef(null);
+  const [noteText, setNoteText] = useState('');
+  const [notes, setNotes] = useState([]);
 
-  const opts = {
-    height: '480',
-    width: '100%',
-    playerVars: {
-      autoplay: 0,
-      controls: 1,
-      modestbranding: 1,
-      rel: 0,
-      fs: 1,
-      enablejsapi: 1,
-      origin: window.location.origin,
-    },
+  // Extract video ID from various YouTube URL formats
+  const extractYouTubeId = (url) => {
+    const patterns = [
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+      /^([a-zA-Z0-9_-]{11})$/
+    ];
+    
+    for (const pattern of patterns) {
+      const match = url.match(pattern);
+      if (match) return match[1];
+    }
+    return url;
   };
 
-  const onReady = (event) => {
-    setPlayer(event.target);
-    setDuration(event.target.getDuration());
-    event.target.setPlaybackRate(playbackRate);
-    setVideoError(false);
-  };
+  const currentVideoId = useCustomUrl && customUrl ? extractYouTubeId(customUrl) : videoId;
 
-  const onError = (event) => {
-    console.error('YouTube player error:', event.data);
-    setVideoError(true);
-  };
-
-  const onStateChange = (event) => {
-    if (event.data === 1) { // Playing
-      setIsPlaying(true);
-      setVideoError(false);
-    } else if (event.data === 2) { // Paused
-      setIsPlaying(false);
+  const handleUseCustomUrl = () => {
+    if (customUrl.trim()) {
+      setUseCustomUrl(true);
     }
   };
 
-  // Keyboard shortcuts
-  useEffect(() => {
-    const handleKeyPress = (e) => {
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-      
-      switch(e.key) {
-        case ' ':
-          e.preventDefault();
-          handlePlayPause();
-          break;
-        case 'ArrowLeft':
-          e.preventDefault();
-          handleSkipBackward();
-          break;
-        case 'ArrowRight':
-          e.preventDefault();
-          handleSkipForward();
-          break;
-        case 'l':
-        case 'L':
-          handleToggleLoop();
-          break;
-        case 's':
-        case 'S':
-          handleSetLoopStart();
-          break;
-        case 'e':
-        case 'E':
-          handleSetLoopEnd();
-          break;
-        case '1':
-          handleSetSpeed(0.25);
-          break;
-        case '2':
-          handleSetSpeed(0.5);
-          break;
-        case '3':
-          handleSetSpeed(0.75);
-          break;
-        case '4':
-          handleSetSpeed(1);
-          break;
-        case '5':
-          handleSetSpeed(1.25);
-          break;
-        case '6':
-          handleSetSpeed(1.5);
-          break;
-        default:
-          break;
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [player, isPlaying, currentTime, isLooping, loopStart, loopEnd]);
-
-  useEffect(() => {
-    if (player && isPlaying) {
-      intervalRef.current = setInterval(() => {
-        const time = player.getCurrentTime();
-        setCurrentTime(time);
-
-        // Loop functionality with counter
-        if (isLooping && loopEnd > loopStart && time >= loopEnd) {
-          player.seekTo(loopStart, true);
-          setLoopCount(prev => prev + 1);
-          
-          // Practice mode: gradually increase speed
-          if (practiceMode && loopCount > 0 && loopCount % 5 === 0) {
-            const newSpeed = Math.min(practiceSpeed + 0.1, 1);
-            setPracticeSpeed(newSpeed);
-            handleSetSpeed(newSpeed);
-          }
-        }
-      }, 100);
-    } else {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    }
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, [player, isPlaying, isLooping, loopStart, loopEnd, loopCount, practiceMode, practiceSpeed]);
-
-  const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
-
-  const handlePlayPause = () => {
-    if (player) {
-      if (isPlaying) {
-        player.pauseVideo();
-      } else {
-        player.playVideo();
-      }
-    }
-  };
-
-  const handleSkipBackward = () => {
-    if (player) {
-      const newTime = Math.max(0, currentTime - 5);
-      player.seekTo(newTime, true);
-      setCurrentTime(newTime);
-    }
-  };
-
-  const handleSkipForward = () => {
-    if (player) {
-      const newTime = Math.min(duration, currentTime + 5);
-      player.seekTo(newTime, true);
-      setCurrentTime(newTime);
-    }
-  };
-
-  const handleSetSpeed = (speed) => {
-    setPlaybackRate(speed);
-    if (player) {
-      player.setPlaybackRate(speed);
-    }
-  };
-
-  const handleSetLoopStart = () => {
-    setLoopStart(currentTime);
-    if (loopEnd === 0 || loopEnd <= currentTime) {
-      setLoopEnd(currentTime + 10); // Set end 10 seconds ahead
-    }
-    setLoopCount(0); // Reset counter when setting new loop
-  };
-
-  const handleSetLoopEnd = () => {
-    setLoopEnd(currentTime);
-    setLoopCount(0); // Reset counter
-  };
-
-  const handleToggleLoop = () => {
-    if (!isLooping && loopStart >= loopEnd) {
-      alert('Please set loop start before loop end');
-      return;
-    }
-    setIsLooping(!isLooping);
-    if (!isLooping) {
-      setLoopCount(0); // Reset counter when starting loop
-    }
-  };
-
-  const handleTogglePracticeMode = () => {
-    setPracticeMode(!practiceMode);
-    if (!practiceMode) {
-      setPracticeSpeed(0.5);
-      handleSetSpeed(0.5);
-    } else {
-      handleSetSpeed(1);
-    }
-  };
-
-  const handleClickSeekBar = () => {
-    if (isSettingLoop) {
-      if (loopStart === 0 || loopEnd > 0) {
-        // Set start
-        setLoopStart(currentTime);
-        setLoopEnd(0);
-      } else {
-        // Set end
-        setLoopEnd(currentTime);
-        setIsSettingLoop(false);
-      }
-    }
+  const handleResetToOriginal = () => {
+    setUseCustomUrl(false);
+    setCustomUrl('');
   };
 
   const handleSaveLoop = () => {
@@ -238,34 +41,11 @@ export default function VideoPlayer({ videoId, savedLoops = [], onSaveLoop }) {
       alert('Please enter a name for this loop');
       return;
     }
-    if (loopStart >= loopEnd) {
-      alert('Loop start must be before loop end');
-      return;
-    }
     onSaveLoop({
       name: loopName,
-      start: loopStart,
-      end: loopEnd,
       timestamp: Date.now()
     });
     setLoopName('');
-  };
-
-  const handleLoadLoop = (loop) => {
-    setLoopStart(loop.start);
-    setLoopEnd(loop.end);
-    setLoopCount(0);
-    if (player) {
-      player.seekTo(loop.start, true);
-    }
-  };
-
-  const handleSeek = (e) => {
-    const seekTime = parseFloat(e.target.value);
-    setCurrentTime(seekTime);
-    if (player) {
-      player.seekTo(seekTime, true);
-    }
   };
 
   const handleAddNote = () => {
@@ -273,7 +53,6 @@ export default function VideoPlayer({ videoId, savedLoops = [], onSaveLoop }) {
     
     const newNote = {
       text: noteText,
-      timestamp: currentTime,
       created: Date.now()
     };
     setNotes([...notes, newNote]);
@@ -284,153 +63,87 @@ export default function VideoPlayer({ videoId, savedLoops = [], onSaveLoop }) {
     setNotes(notes.filter((_, i) => i !== index));
   };
 
-  const handleJumpToNote = (timestamp) => {
-    if (player) {
-      player.seekTo(timestamp, true);
-      setCurrentTime(timestamp);
-    }
-  };
-
   return (
     <div className="video-player">
-      <div className="video-container">
-        {videoError ? (
-          <div className="video-error">
-            <div className="error-content">
-              <h3>⚠️ Video Unavailable</h3>
-              <p>This video cannot be embedded. Watch it directly on YouTube:</p>
-              <a 
-                href={`https://www.youtube.com/watch?v=${videoId}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="youtube-link"
-              >
-                🎥 Open in YouTube
-              </a>
-              <p className="error-hint">
-                Tip: Use your own YouTube videos or videos that allow embedding for the best experience.
-              </p>
-            </div>
-          </div>
-        ) : (
-          <YouTube
-            videoId={videoId}
-            opts={opts}
-            onReady={onReady}
-            onStateChange={onStateChange}
-            onError={onError}
+      <div className="custom-url-section">
+        <div className="custom-url-input">
+          <input
+            type="text"
+            placeholder="Paste your own YouTube URL or video ID here..."
+            value={customUrl}
+            onChange={(e) => setCustomUrl(e.target.value)}
+            disabled={useCustomUrl}
           />
-        )}
+          {!useCustomUrl ? (
+            <button onClick={handleUseCustomUrl} disabled={!customUrl.trim()}>
+              Use This Video
+            </button>
+          ) : (
+            <button onClick={handleResetToOriginal} className="reset-btn">
+              Reset to Original
+            </button>
+          )}
+        </div>
+        <p className="url-hint">
+          💡 Tip: Use your own YouTube videos or find guitar tutorials that work for you!
+        </p>
+      </div>
+
+      <div className="video-container">
+        <iframe
+          src={`https://www.youtube.com/embed/${currentVideoId}?rel=0&modestbranding=1&controls=1`}
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          className="youtube-iframe"
+        />
+      </div>
+
+      <div className="video-info-section">
+        <div className="helpful-links">
+          <h3>🎸 Helpful Resources</h3>
+          <div className="link-grid">
+            <a href="https://www.youtube.com/results?search_query=guitar+lesson+beginner" target="_blank" rel="noopener noreferrer">
+              Find Beginner Lessons
+            </a>
+            <a href="https://www.youtube.com/results?search_query=guitar+chords+tutorial" target="_blank" rel="noopener noreferrer">
+              Chord Tutorials
+            </a>
+            <a href="https://www.youtube.com/results?search_query=guitar+fingerpicking" target="_blank" rel="noopener noreferrer">
+              Fingerpicking Lessons
+            </a>
+            <a href="https://www.youtube.com/results?search_query=guitar+scales+tutorial" target="_blank" rel="noopener noreferrer">
+              Guitar Scales
+            </a>
+          </div>
+        </div>
       </div>
 
       <div className="controls">
-        <div className="playback-controls">
-          <button onClick={handleSkipBackward} title="Skip back 5s (←)">
-            ⏪ -5s
-          </button>
-          <button onClick={handlePlayPause} title="Play/Pause (Space)">
-            {isPlaying ? '⏸ Pause' : '▶ Play'}
-          </button>
-          <button onClick={handleSkipForward} title="Skip forward 5s (→)">
-            ⏩ +5s
-          </button>
-          <span className="time-display">
-            {formatTime(currentTime)} / {formatTime(duration)}
-          </span>
-        </div>
-
-        <div className="speed-controls">
-          <label>Speed:</label>
-          {[0.25, 0.5, 0.75, 1, 1.25, 1.5].map(speed => (
-            <button
-              key={speed}
-              onClick={() => handleSetSpeed(speed)}
-              className={playbackRate === speed ? 'active' : ''}
-              title={`Set speed to ${speed}x (${speed === 0.25 ? '1' : speed === 0.5 ? '2' : speed === 0.75 ? '3' : speed === 1 ? '4' : speed === 1.25 ? '5' : '6'})`}
-            >
-              {speed}x
-            </button>
-          ))}
-        </div>
-
-        <div className="seek-bar">
-          <div className="seek-bar-container">
-            {loopStart > 0 && loopEnd > loopStart && (
-              <div 
-                className="loop-range-indicator"
-                style={{
-                  left: `${(loopStart / duration) * 100}%`,
-                  width: `${((loopEnd - loopStart) / duration) * 100}%`
-                }}
-              />
-            )}
-            {notes.map((note, index) => (
-              <div
-                key={index}
-                className="note-marker"
-                style={{ left: `${(note.timestamp / duration) * 100}%` }}
-                title={note.text}
-              />
-            ))}
-            <input
-              type="range"
-              min="0"
-              max={duration || 100}
-              value={currentTime}
-              onChange={handleSeek}
-              step="0.1"
-              className="seek-slider"
-            />
-          </div>
-        </div>
-
         <div className="loop-controls">
-          <h3>Loop Controls {isLooping && loopCount > 0 && <span className="loop-counter">(Loop #{loopCount})</span>}</h3>
-          <div className="loop-buttons">
-            <button onClick={handleSetLoopStart} title="Set loop start (S)">
-              Set Loop Start ({formatTime(loopStart)})
-            </button>
-            <button onClick={handleSetLoopEnd} title="Set loop end (E)">
-              Set Loop End ({formatTime(loopEnd)})
-            </button>
-            <button 
-              onClick={handleToggleLoop}
-              className={isLooping ? 'active' : ''}
-              title="Toggle loop (L)"
-            >
-              {isLooping ? '🔁 Looping ON' : '🔁 Loop OFF'}
-            </button>
-            <button
-              onClick={handleTogglePracticeMode}
-              className={practiceMode ? 'active' : ''}
-              title="Auto-increase speed every 5 loops"
-            >
-              {practiceMode ? `🎯 Practice Mode (${practiceSpeed.toFixed(2)}x)` : '🎯 Practice Mode OFF'}
-            </button>
-          </div>
-
+          <h3>📚 Save Your Practice Points</h3>
           <div className="save-loop">
             <input
               type="text"
-              placeholder="Name this loop..."
+              placeholder="Name this practice point..."
               value={loopName}
               onChange={(e) => setLoopName(e.target.value)}
             />
-            <button onClick={handleSaveLoop}>💾 Save Loop</button>
+            <button onClick={handleSaveLoop}>💾 Save</button>
           </div>
         </div>
 
         {savedLoops.length > 0 && (
           <div className="saved-loops">
-            <h3>Saved Loops</h3>
+            <h3>Saved Practice Points</h3>
             <div className="loops-list">
               {savedLoops.map((loop, index) => (
                 <div key={index} className="loop-item">
                   <span className="loop-name">{loop.name}</span>
                   <span className="loop-time">
-                    {formatTime(loop.start)} - {formatTime(loop.end)}
+                    {new Date(loop.timestamp).toLocaleDateString()}
                   </span>
-                  <button onClick={() => handleLoadLoop(loop)}>Load</button>
                 </div>
               ))}
             </div>
@@ -450,7 +163,7 @@ export default function VideoPlayer({ videoId, savedLoops = [], onSaveLoop }) {
               <div className="add-note">
                 <input
                   type="text"
-                  placeholder="Add a note at current time..."
+                  placeholder="Add a note..."
                   value={noteText}
                   onChange={(e) => setNoteText(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleAddNote()}
@@ -460,14 +173,8 @@ export default function VideoPlayer({ videoId, savedLoops = [], onSaveLoop }) {
 
               {notes.length > 0 && (
                 <div className="notes-list">
-                  {notes.sort((a, b) => a.timestamp - b.timestamp).map((note, index) => (
+                  {notes.map((note, index) => (
                     <div key={index} className="note-item">
-                      <button 
-                        className="note-timestamp"
-                        onClick={() => handleJumpToNote(note.timestamp)}
-                      >
-                        {formatTime(note.timestamp)}
-                      </button>
                       <span className="note-text">{note.text}</span>
                       <button 
                         className="delete-note"
@@ -485,15 +192,15 @@ export default function VideoPlayer({ videoId, savedLoops = [], onSaveLoop }) {
 
         <div className="keyboard-shortcuts">
           <details>
-            <summary>⌨️ Keyboard Shortcuts</summary>
+            <summary>⌨️ YouTube Player Tips</summary>
             <div className="shortcuts-list">
-              <div><kbd>Space</kbd> Play/Pause</div>
-              <div><kbd>←</kbd> Skip back 5s</div>
-              <div><kbd>→</kbd> Skip forward 5s</div>
-              <div><kbd>S</kbd> Set loop start</div>
-              <div><kbd>E</kbd> Set loop end</div>
-              <div><kbd>L</kbd> Toggle loop</div>
-              <div><kbd>1-6</kbd> Set speed (0.25x - 1.5x)</div>
+              <div><kbd>K</kbd> or <kbd>Space</kbd> Play/Pause</div>
+              <div><kbd>J</kbd> Rewind 10 seconds</div>
+              <div><kbd>L</kbd> Forward 10 seconds</div>
+              <div><kbd>←/→</kbd> Skip 5 seconds</div>
+              <div><kbd>&lt;/&gt;</kbd> Slow down / Speed up</div>
+              <div><kbd>F</kbd> Fullscreen</div>
+              <div><kbd>M</kbd> Mute/Unmute</div>
             </div>
           </details>
         </div>
