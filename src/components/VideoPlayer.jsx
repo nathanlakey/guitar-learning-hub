@@ -66,27 +66,28 @@ export default function VideoPlayer({ videoId, savedLoops = [], onSaveLoop }) {
   return (
     <div className="video-player">
       <div className="custom-url-section">
+        <h2 className="custom-url-title">🎥 Add Your Own Video</h2>
+        <p className="custom-url-description">
+          The default videos are placeholders. Search YouTube for guitar lessons and paste the URL here:
+        </p>
         <div className="custom-url-input">
           <input
             type="text"
-            placeholder="Paste your own YouTube URL or video ID here..."
+            placeholder="Paste any YouTube URL here (e.g., https://youtube.com/watch?v=...)"
             value={customUrl}
             onChange={(e) => setCustomUrl(e.target.value)}
             disabled={useCustomUrl}
           />
           {!useCustomUrl ? (
             <button onClick={handleUseCustomUrl} disabled={!customUrl.trim()}>
-              Use This Video
+              Load Video
             </button>
           ) : (
             <button onClick={handleResetToOriginal} className="reset-btn">
-              Reset to Original
+              Change Video
             </button>
           )}
         </div>
-        <p className="url-hint">
-          💡 Tip: Use your own YouTube videos or find guitar tutorials that work for you!
-        </p>
       </div>
 
       <div className="video-container">

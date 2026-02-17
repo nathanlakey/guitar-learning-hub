@@ -5,37 +5,76 @@
 }
 
 .custom-url-section {
-  background: rgba(100, 108, 255, 0.1);
-  border: 2px solid rgba(100, 108, 255, 0.3);
-  border-radius: 8px;
-  padding: 20px;
+  background: linear-gradient(135deg, rgba(100, 108, 255, 0.2) 0%, rgba(100, 108, 255, 0.1) 100%);
+  border: 2px solid rgba(100, 108, 255, 0.5);
+  border-radius: 12px;
+  padding: 25px;
   margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(100, 108, 255, 0.2);
+}
+
+.custom-url-title {
+  color: #fff;
+  font-size: 20px;
+  margin: 0 0 10px 0;
+  font-weight: 600;
+}
+
+.custom-url-description {
+  color: #ddd;
+  font-size: 14px;
+  margin-bottom: 15px;
+  line-height: 1.5;
 }
 
 .custom-url-input {
   display: flex;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 0;
 }
 
 .custom-url-input input {
   flex: 1;
-  padding: 12px;
+  padding: 14px;
   border-radius: 6px;
-  border: 1px solid #444;
-  background: #2a2a2a;
+  border: 2px solid #646cff;
+  background: #1a1a1a;
   color: #fff;
   font-size: 14px;
+  transition: all 0.3s;
+}
+
+.custom-url-input input:focus {
+  outline: none;
+  border-color: #8187ff;
+  box-shadow: 0 0 0 3px rgba(100, 108, 255, 0.2);
 }
 
 .custom-url-input input:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
+  border-color: #444;
 }
 
 .custom-url-input button {
-  padding: 12px 24px;
+  padding: 14px 28px;
   white-space: nowrap;
+  font-weight: 600;
+  font-size: 14px;
+  background: #646cff;
+  border: 2px solid #646cff;
+  transition: all 0.3s;
+}
+
+.custom-url-input button:hover:not(:disabled) {
+  background: #7c82ff;
+  border-color: #7c82ff;
+  transform: translateY(-1px);
+}
+
+.custom-url-input button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .reset-btn {
@@ -45,13 +84,7 @@
 
 .reset-btn:hover {
   background: #ff5252 !important;
-}
-
-.url-hint {
-  color: #aaa;
-  font-size: 13px;
-  margin: 0;
-  text-align: center;
+  border-color: #ff5252 !important;
 }
 
 .video-container {

@@ -5,27 +5,27 @@ export const learningPaths = {
     videos: [
       {
         id: "v1",
-        youtubeId: "CW36CkFg5GU",
+        youtubeId: "dQw4w9WgXcQ",
         title: "How to Hold a Guitar",
-        description: "Learn proper posture and hand positioning"
+        description: "Learn proper posture and hand positioning - Replace with your own video!"
       },
       {
         id: "v2",
-        youtubeId: "cnyeN9VjYMA",
+        youtubeId: "dQw4w9WgXcQ",
         title: "Your First Guitar Chords",
-        description: "Master the basic open chords: G, C, D, Em, Am"
+        description: "Master the basic open chords - Replace with your own video!"
       },
       {
         id: "v3",
-        youtubeId: "ts7K9kIDCYg",
+        youtubeId: "dQw4w9WgXcQ",
         title: "Basic Strumming Patterns",
-        description: "Learn essential rhythm patterns"
+        description: "Learn essential rhythm patterns - Replace with your own video!"
       },
       {
         id: "v4",
-        youtubeId: "Bparw9Jo3dk",
+        youtubeId: "dQw4w9WgXcQ",
         title: "Easy Songs for Beginners",
-        description: "Play your first complete songs"
+        description: "Play your first complete songs - Replace with your own video!"
       }
     ]
   },
@@ -35,27 +35,27 @@ export const learningPaths = {
     videos: [
       {
         id: "v5",
-        youtubeId: "VdH4NKdPDjQ",
+        youtubeId: "dQw4w9WgXcQ",
         title: "Barre Chords Mastery",
-        description: "Learn to play barre chords cleanly"
+        description: "Learn to play barre chords cleanly - Replace with your own video!"
       },
       {
         id: "v6",
-        youtubeId: "Y8qPHb_FSfs",
+        youtubeId: "dQw4w9WgXcQ",
         title: "Fingerpicking Basics",
-        description: "Introduction to fingerstyle guitar"
+        description: "Introduction to fingerstyle guitar - Replace with your own video!"
       },
       {
         id: "v7",
-        youtubeId: "r8hgjE9dS5o",
+        youtubeId: "dQw4w9WgXcQ",
         title: "Scales and Lead Guitar",
-        description: "Pentatonic scale and soloing basics"
+        description: "Pentatonic scale and soloing basics - Replace with your own video!"
       },
       {
         id: "v8",
-        youtubeId: "ZNxW25SqTkM",
+        youtubeId: "dQw4w9WgXcQ",
         title: "Chord Progressions",
-        description: "Understanding common progressions"
+        description: "Understanding common progressions - Replace with your own video!"
       }
     ]
   },
@@ -65,27 +65,27 @@ export const learningPaths = {
     videos: [
       {
         id: "v9",
-        youtubeId: "ZwzMJWSSqPA",
+        youtubeId: "dQw4w9WgXcQ",
         title: "Advanced Fingerstyle",
-        description: "Complex fingerpicking patterns"
+        description: "Complex fingerpicking patterns - Replace with your own video!"
       },
       {
         id: "v10",
-        youtubeId: "rgaTLrZGlk0",
+        youtubeId: "dQw4w9WgXcQ",
         title: "Music Theory for Guitarists",
-        description: "Deep dive into theory applications"
+        description: "Deep dive into theory applications - Replace with your own video!"
       },
       {
         id: "v11",
-        youtubeId: "lhJPpAJ3wJA",
+        youtubeId: "dQw4w9WgXcQ",
         title: "Jazz Chord Voicings",
-        description: "Extended and altered chords"
+        description: "Extended and altered chords - Replace with your own video!"
       },
       {
         id: "v12",
-        youtubeId: "dvcn1h6ywBY",
+        youtubeId: "dQw4w9WgXcQ",
         title: "Advanced Improvisation",
-        description: "Soloing over complex changes"
+        description: "Soloing over complex changes - Replace with your own video!"
       }
     ]
   }
