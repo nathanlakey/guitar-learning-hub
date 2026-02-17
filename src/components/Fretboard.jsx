@@ -136,7 +136,7 @@ export default function Fretboard() {
                   return (
                     <div key={fret} className="fret-cell">
                       <div className="string-line"></div>
-                      {inScale && (
+                      {inScale && fret > 0 && (
                         <div className={`note ${isRoot ? 'root' : 'scale'}`}>
                           {showNoteNames ? note : '•'}
                         </div>
