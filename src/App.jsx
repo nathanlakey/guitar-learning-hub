@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import VideoPlayer from './components/VideoPlayer';
 import LearningPath from './components/LearningPath';
 import Bookmarks from './components/Bookmarks';
+import Fretboard from './components/Fretboard';
 import { learningPaths } from './data/learningPaths';
 import './App.css';
 
@@ -86,6 +87,12 @@ function App() {
               onClick={() => setCurrentView('advanced')}
             >
               🚀 Advanced
+            </button>
+            <button 
+              className={currentView === 'fretboard' ? 'active' : ''}
+              onClick={() => setCurrentView('fretboard')}
+            >
+              🎸 Fretboard
             </button>
             <button 
               className={currentView === 'bookmarks' ? 'active' : ''}
@@ -181,6 +188,10 @@ function App() {
             bookmarkedVideos={bookmarkedVideos}
             onToggleBookmark={handleToggleBookmark}
           />
+        )}
+
+        {currentView === 'fretboard' && (
+          <Fretboard />
         )}
 
         {currentView === 'bookmarks' && (
